@@ -13,13 +13,13 @@ namespace WARestfulAPI.Data
 
         public List<Tableware> Tablewares { get; set; }
 
-        public List<Vagetable> Vagetables { get; set; }
+        public List<Vegetable> Vegetables { get; set; }
 
         public DataService()
         {
             Fruits = new List<Fruit>();
             Tablewares = new List<Tableware>();
-            Vagetables = new List<Vagetable>();
+            Vegetables = new List<Vegetable>();
         }
     }
 }

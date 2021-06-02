@@ -7,7 +7,7 @@ using WARestfulAPI.Modules.Base;
 
 namespace WARestfulAPI.Modules
 {
-    public class Vagetable : Product
+    public class Vegetable : Product
     {
         
     }
