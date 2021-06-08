@@ -46,7 +46,9 @@ namespace WARestfulAPI.Controllers
             {
                 throw new KeyNotFoundException();
             }
+
             _context.Vegetables.Add(vegetable);
+            _context.SaveChanges();
         }
 
         [HttpPut]
@@ -70,6 +72,7 @@ namespace WARestfulAPI.Controllers
             var vegitable = _context.Vegetables.FirstOrDefault(v => v.Id == id);
 
             _context.Vegetables.Remove(vegitable);
+            _context.SaveChanges();
         }
     }
 }

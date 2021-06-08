@@ -9,7 +9,7 @@ using WARestfulAPI.Data;
 namespace WARestfulAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210608074335_Init")]
+    [Migration("20210608113908_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
