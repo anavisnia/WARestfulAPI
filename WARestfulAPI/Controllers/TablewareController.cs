@@ -13,23 +13,23 @@ namespace WARestfulAPI.Controllers
     [Route("[controller]")]
     public class TablewareController : ControllerBase
     {
-        private readonly DataService _dataService;
+        private readonly DataContext _context;
 
-        public TablewareController(DataService dataService)
+        public TablewareController(DataContext context)
         {
-            _dataService = dataService;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpGet]
         public List<Tableware> GetAll()
         {
-            return _dataService.Tablewares;
+            return _context.Tablewares.ToList();
         }
 
         [HttpGet("{id}")]
         public Tableware GetById(int id)
         {
-            var tableware = _dataService.Tablewares.FirstOrDefault(t => t.Id == id);
+            var tableware = _context.Tablewares.FirstOrDefault(t => t.Id == id);
 
             if(tableware == null)
             {
@@ -47,33 +47,36 @@ namespace WARestfulAPI.Controllers
                 throw new KeyNotFoundException();
             }
 
-            _dataService.Tablewares.Add(tableware);
+            _context.Tablewares.Add(tableware);
+            _context.SaveChanges();
         }
 
         [HttpPut]
         public void Update(Tableware tableware)
         {
-            var tablewareToUpdate = _dataService.Tablewares.FirstOrDefault(t => t.Id == tableware.Id);
+            var tablewareToUpdate = _context.Tablewares.FirstOrDefault(t => t.Id == tableware.Id);
 
             if(tableware == null)
             {
                 throw new KeyNotFoundException();
             }
 
-            _dataService.Tablewares[tableware.Id] = tableware;
+            //_context.Tablewares[tableware.Id] = tableware;
+            //_context.SaveChanges();
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var tableware = _dataService.Tablewares.FirstOrDefault(t => t.Id == id);
+            var tableware = _context.Tablewares.FirstOrDefault(t => t.Id == id);
 
             if(tableware == null)
             {
                 throw new KeyNotFoundException();
             }
 
-            _dataService.Tablewares.Remove(tableware);
+            _context.Tablewares.Remove(tableware);
+            _context.SaveChanges();
         }
     }
 }

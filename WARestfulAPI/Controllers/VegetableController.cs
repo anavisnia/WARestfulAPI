@@ -13,23 +13,23 @@ namespace WARestfulAPI.Controllers
     [Route("[controller]")]
     public class VegetableController : ControllerBase
     {
-        private DataService _dataService;
+        private readonly DataContext _context;
 
-        public VegetableController(DataService dataService)
+        public VegetableController(DataContext context)
         {
-            _dataService = dataService;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpGet]
         public List<Vegetable> getAll()
         {
-            return _dataService.Vegetables;
+            return _context.Vegetables.ToList();
         }
 
         [HttpGet("{id}")]
-        public Vegetable GetBYId(int id)
+        public Vegetable GetById(int id)
         {
-            var vegetable = _dataService.Vegetables.FirstOrDefault(v => v.Id == id);
+            var vegetable = _context.Vegetables.FirstOrDefault(v => v.Id == id);
 
             if(vegetable == null)
             {
@@ -46,28 +46,29 @@ namespace WARestfulAPI.Controllers
             {
                 throw new KeyNotFoundException();
             }
-            _dataService.Vegetables.Add(vegetable);
+            _context.Vegetables.Add(vegetable);
         }
 
         [HttpPut]
         public void Update(Vegetable vegetable)
         {
-            var toBeUpdatedVegetable = _dataService.Vegetables.FirstOrDefault(v => v.Id == vegetable.Id);
+            var toBeUpdatedVegetable = _context.Vegetables.FirstOrDefault(v => v.Id == vegetable.Id);
 
             if(vegetable == null)
             {
                 throw new KeyNotFoundException();
             }
 
-            _dataService.Vegetables[vegetable.Id] = vegetable;
+            //_context.Vegetables[vegetable.Id] = vegetable;
+            //_context.SaveChanges();
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var vegitable = _dataService.Vegetables.FirstOrDefault(v => v.Id == id);
+            var vegitable = _context.Vegetables.FirstOrDefault(v => v.Id == id);
 
-            _dataService.Vegetables.Remove(vegitable);
+            _context.Vegetables.Remove(vegitable);
         }
     }
 }
