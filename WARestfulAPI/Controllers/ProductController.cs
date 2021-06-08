@@ -27,6 +27,12 @@ namespace WARestfulAPI.Controllers
             return _context.Products.ToList();
         }
 
+        [HttpGet("{id}")]
+        public Product GetById(int id)
+        {
+            return _context.Products.FirstOrDefault(s => s.Id == id);
+        }
+
         [HttpPost]
         public void Create(Product item)
         {
@@ -36,6 +42,25 @@ namespace WARestfulAPI.Controllers
             }
             _context.Products.Add(item);
             _context.SaveChanges();
+        }
+
+        [HttpPut]
+        public void Update(Product item)
+        {
+            _context.Update(item);
+            _context.SaveChanges();
+        }
+
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            var shop = _context.Products.FirstOrDefault(s => s.Id == id);
+
+            if (shop != null)
+            {
+                _context.Remove(shop);
+                _context.SaveChanges();
+            }
         }
     }
 }

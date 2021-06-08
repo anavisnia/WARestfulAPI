@@ -62,7 +62,8 @@ namespace WARestfulAPI.Controllers
             }
 
             //_context.Tablewares[tableware.Id] = tableware;
-            //_context.SaveChanges();
+            _context.Update(tableware);
+            _context.SaveChanges();
         }
 
         [HttpDelete("{id}")]

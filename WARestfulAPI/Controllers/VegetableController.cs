@@ -60,7 +60,8 @@ namespace WARestfulAPI.Controllers
             }
 
             //_context.Vegetables[vegetable.Id] = vegetable;
-            //_context.SaveChanges();
+            _context.Update(vegetable);
+            _context.SaveChanges();
         }
 
         [HttpDelete("{id}")]
