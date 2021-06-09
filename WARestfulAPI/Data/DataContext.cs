@@ -27,5 +27,13 @@ namespace WARestfulAPI.Data
 
         public DbSet<Vegetable> Vegetables { get; set; }
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Shop>()
+        //    .HasMany(s => s.Products)
+        //    .WithOne(pr => pr.shop)
+        //    .HasForeignKey(si => si.ShopId);
+        //}
+
     }
 }
