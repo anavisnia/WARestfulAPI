@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +29,16 @@ namespace WARestfulAPI
         public void ConfigureServices(IServiceCollection services)
         {
             var defaultConnectionString = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<DataContext>(d => d.UseSqlServer(defaultConnectionString));
-            //services.AddSingleton<DataService>();
-            services.AddSwaggerGen();
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddSwaggerGen( c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WARestfulAPI", Version = "v1" });
+            });
+
             services.AddControllers();
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,10 @@ namespace WARestfulAPI.Controllers
         }
 
         [HttpGet]
-        public List<Shop> GetAll()
+        public async Task <IEnumerable<Shop>> GetAll()
         {
-            return _context.Shops.ToList();
+            var items = _context.Shops.Where(i => i.Id == 1);
+            return await items.ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -33,28 +35,28 @@ namespace WARestfulAPI.Controllers
         }
 
         [HttpPost]
-        public void Post(Shop item)
+        public async Task Post(Shop item)
         {
             _context.Add(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         [HttpPut]
-        public void Update(Shop item)
+        public async Task Update(Shop item)
         {
             _context.Update(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var shop = _context.Shops.FirstOrDefault(s => s.Id == id);
 
             if(shop != null)
             {
                 _context.Remove(shop);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }
