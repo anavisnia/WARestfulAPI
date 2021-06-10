@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Data;
+using WARestfulAPI.Dtos;
 using WARestfulAPI.Modules;
 
 namespace WARestfulAPI.Controllers
@@ -14,16 +17,20 @@ namespace WARestfulAPI.Controllers
     public class VegetableController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public VegetableController(DataContext context)
+        public VegetableController(DataContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
-        public List<Vegetable> getAll()
+        public async Task<List<ProductDto>> getAll()
         {
-            return _context.Vegetables.ToList();
+            var entity = await _context.Tablewares.Include(s => s.shop).ToListAsync();
+
+            return _mapper.Map<List<ProductDto>>(entity);
         }
 
         [HttpGet("{id}")]
@@ -40,19 +47,21 @@ namespace WARestfulAPI.Controllers
         }
 
         [HttpPost]
-        public void Create(Vegetable vegetable)
+        public async Task Create(Vegetable vegetable)
         {
             if(vegetable == null)
             {
                 throw new KeyNotFoundException();
             }
+            var entity = _mapper.Map<Vegetable>(vegetable);
 
-            _context.Vegetables.Add(vegetable);
-            _context.SaveChanges();
+            _context.Vegetables.Add(entity);
+
+            await _context.SaveChangesAsync();
         }
 
         [HttpPut]
-        public void Update(Vegetable vegetable)
+        public async Task Update(Vegetable vegetable)
         {
             var toBeUpdatedVegetable = _context.Vegetables.FirstOrDefault(v => v.Id == vegetable.Id);
 
@@ -61,18 +70,18 @@ namespace WARestfulAPI.Controllers
                 throw new KeyNotFoundException();
             }
 
-            //_context.Vegetables[vegetable.Id] = vegetable;
             _context.Update(vegetable);
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var vegitable = _context.Vegetables.FirstOrDefault(v => v.Id == id);
 
             _context.Vegetables.Remove(vegitable);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
