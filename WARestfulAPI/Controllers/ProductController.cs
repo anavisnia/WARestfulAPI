@@ -10,6 +10,7 @@ using WARestfulAPI.Data;
 using WARestfulAPI.Dtos;
 using WARestfulAPI.Modules;
 using WARestfulAPI.Modules.Base;
+using WARestfulAPI.Repositories;
 
 namespace WARestfulAPI.Controllers
 {
@@ -17,19 +18,21 @@ namespace WARestfulAPI.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly GenericRepository<Product> _repository;
 
-        public ProductController(DataContext context, IMapper mapper)
+        public ProductController(IMapper mapper, GenericRepository<Product> repository)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentException(nameof(mapper));
+            _repository = repository ?? throw new ArgumentException(nameof(repository));
         }
 
         [HttpGet]
         public async Task<List<ProductDto>> GetAll()
         {
-            var entities = await _context.Products.Include(p => p.shop).ToListAsync();
+            // if shopId was not indicated it won't show up in the list
+            //var entities = await _context.Products.Include(p => p.shop).ToListAsync();
+            //var entities = await _context.Products.ToListAsync();
 
             //var dtos = new List<ProductDto>();
 
@@ -45,47 +48,38 @@ namespace WARestfulAPI.Controllers
 
             //return dtos;
 
+            var entities = await _repository.GetAll();
+
             return _mapper.Map<List<ProductDto>>(entities);
         }
 
         [HttpGet("{id}")]
-        public Product GetById(int id)
+        public ProductDto GetById(int id)
         {
-            return _context.Products.FirstOrDefault(s => s.Id == id);
+            var entity = _repository.FindById(id);
+
+            return _mapper.Map<ProductDto>(entity);
         }
 
         [HttpPost]
-        public async Task Create(ProductDto item)
+        public async Task Upsert(ProductDto item)
         {
-            if (item == null)
-            {
-                throw new KeyNotFoundException();
-            }
-
             var entity = _mapper.Map<Product>(item);
 
-            _context.Products.Add(entity);
-
-            await _context.SaveChangesAsync();
+            await _repository.Upsert(entity);
         }
 
-        [HttpPut]
-        public async Task Update(Product item)
-        {
-            _context.Update(item);
-            await _context.SaveChangesAsync();
-        }
+        //[HttpPut]
+        //public async Task Update(Product item)
+        //{
+        //    _context.Update(item);
+        //    await _context.SaveChangesAsync();
+        //}
 
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            var shop = _context.Products.FirstOrDefault(s => s.Id == id);
-
-            if (shop != null)
-            {
-                _context.Remove(shop);
-                await _context.SaveChangesAsync();
-            }
+            await _repository.Delete(id);
         }
     }
 }

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WARestfulAPI.Data;
+using WARestfulAPI.Repositories;
 
 namespace WARestfulAPI
 {
@@ -33,6 +34,8 @@ namespace WARestfulAPI
             services.AddDbContext<DataContext>(d => d.UseSqlServer(defaultConnectionString));
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddScoped(typeof(GenericRepository<>));
 
             services.AddSwaggerGen( c =>
             {

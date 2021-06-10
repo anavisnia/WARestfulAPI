@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace WARestfulAPI.Dtos
 {
-    public class ProductDto
+    public class ShopDto
     {
-        public int? Id { get; set;}
+        public int? Id { get; set; }
 
         public string Name { get; set; }
-
-        public int Quantity { get; set; }
-
-        public int ShopId { get; set; }
     }
 }

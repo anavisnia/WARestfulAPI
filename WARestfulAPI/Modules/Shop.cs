@@ -3,14 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WARestfulAPI.Modules.Base
 {
-    public class Shop
+    public class Shop : Entity
     {
-        [Key]
-        public int Id { get; set; }
-
-        [MaxLength(50)]
-        public string Name { get; set; }
-
         //public List<Product> Products { get; set; }
     }
 }

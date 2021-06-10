@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 
 namespace WARestfulAPI.Modules.Base
 {
-    public class Product
+    public class Entity
     {
         [Key]
         public int Id { get; set; }
 
+        [MaxLength(50)]
         public string Name { get; set; }
-
-        public int Quantity { get; set; }
-
-        public Shop shop { get; set; }
-
-        public int ShopId { get; set; }
-
-        public bool Deleted { get; set; } = false;
     }
 }
