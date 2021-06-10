@@ -98,6 +98,7 @@ namespace WARestfulAPI.Controllers
             }
             
             _context.Update(fruit);
+
             await _context.SaveChangesAsync();
 
         }

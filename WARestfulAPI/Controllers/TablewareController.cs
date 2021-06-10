@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Data;
+using WARestfulAPI.Dtos;
 using WARestfulAPI.Modules;
 
 namespace WARestfulAPI.Controllers
@@ -14,16 +17,20 @@ namespace WARestfulAPI.Controllers
     public class TablewareController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public TablewareController(DataContext context)
+        public TablewareController(DataContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpGet]
-        public List<Tableware> GetAll()
+        public async Task<List<ProductDto>> GetAll()
         {
-            return _context.Tablewares.ToList();
+            var entity = await _context.Tablewares.Include(p => p.shop).ToListAsync();
+
+            return _mapper.Map<List<ProductDto>>(entity);
         }
 
         [HttpGet("{id}")]
@@ -40,19 +47,22 @@ namespace WARestfulAPI.Controllers
         }
 
         [HttpPost]
-        public void Create(Tableware tableware)
+        public async Task Create(ProductDto tableware)
         {
             if (tableware == null)
             {
                 throw new KeyNotFoundException();
             }
 
-            _context.Tablewares.Add(tableware);
-            _context.SaveChanges();
+            var entity = _mapper.Map<Tableware>(tableware);
+
+            _context.Tablewares.Add(entity);
+
+            await _context.SaveChangesAsync();
         }
 
         [HttpPut]
-        public void Update(Tableware tableware)
+        public async Task Update(Tableware tableware)
         {
             var tablewareToUpdate = _context.Tablewares.FirstOrDefault(t => t.Id == tableware.Id);
 
@@ -61,13 +71,13 @@ namespace WARestfulAPI.Controllers
                 throw new KeyNotFoundException();
             }
 
-            //_context.Tablewares[tableware.Id] = tableware;
             _context.Update(tableware);
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var tableware = _context.Tablewares.FirstOrDefault(t => t.Id == id);
 
@@ -77,7 +87,7 @@ namespace WARestfulAPI.Controllers
             }
 
             _context.Tablewares.Remove(tableware);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
