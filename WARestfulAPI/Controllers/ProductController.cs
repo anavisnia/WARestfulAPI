@@ -27,9 +27,9 @@ namespace WARestfulAPI.Controllers
         }
 
         [HttpGet]
-        public List<ProductDto> GetAll()
+        public async Task<List<ProductDto>> GetAll()
         {
-            var entities = _context.Products.Include(p => p.shop).ToList();
+            var entities = await _context.Products.Include(p => p.shop).ToListAsync();
 
             //var dtos = new List<ProductDto>();
 
@@ -55,7 +55,7 @@ namespace WARestfulAPI.Controllers
         }
 
         [HttpPost]
-        public void Create(ProductDto item)
+        public async Task Create(ProductDto item)
         {
             if (item == null)
             {
@@ -66,25 +66,25 @@ namespace WARestfulAPI.Controllers
 
             _context.Products.Add(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         [HttpPut]
-        public void Update(Product item)
+        public async Task Update(Product item)
         {
             _context.Update(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var shop = _context.Products.FirstOrDefault(s => s.Id == id);
 
             if (shop != null)
             {
                 _context.Remove(shop);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

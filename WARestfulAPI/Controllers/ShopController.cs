@@ -24,8 +24,7 @@ namespace WARestfulAPI.Controllers
         [HttpGet]
         public async Task <IEnumerable<Shop>> GetAll()
         {
-            var items = _context.Shops.Where(i => i.Id == 1);
-            return await items.ToListAsync();
+            return await _context.Shops.ToListAsync();
         }
 
         [HttpGet("{id}")]

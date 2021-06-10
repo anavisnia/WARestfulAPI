@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Data;
+using WARestfulAPI.Dtos;
 using WARestfulAPI.Modules;
 
 namespace WARestfulAPI.Controllers
@@ -14,16 +17,26 @@ namespace WARestfulAPI.Controllers
     public class FruitController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public FruitController(DataContext context)
+        public FruitController(DataContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        //[HttpGet]
+        //public List<Fruit> GetAll()
+        //{
+        //    return _context.Fruits.ToList();
+        //}
+
         [HttpGet]
-        public List<Fruit> GetAll()
+        public async Task<List<ProductDto>> GetAll()
         {
-            return _context.Fruits.ToList();
+            var entities = await _context.Fruits.Include(p => p.shop).ToListAsync();
+
+            return _mapper.Map<List<ProductDto>>(entities);
         }
 
         [HttpGet("{id}")]
@@ -39,11 +52,26 @@ namespace WARestfulAPI.Controllers
             return fruit;
         }
 
+        //[HttpPost]
+        //public void Create(Fruit fruit)
+        //{
+        //    _context.Fruits.Add(fruit);
+        //    _context.SaveChanges();
+        //}
+
         [HttpPost]
-        public void Create(Fruit fruit)
+        public async Task Create(ProductDto fruit)
         {
-            _context.Fruits.Add(fruit);
-            _context.SaveChanges();
+            if (fruit == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            var entity = _mapper.Map<Fruit>(fruit);
+
+            _context.Fruits.Add(entity);
+
+            await _context.SaveChangesAsync();
         }
 
         //[HttpPut("{id}")]
@@ -60,7 +88,7 @@ namespace WARestfulAPI.Controllers
         //}
 
         [HttpPut]
-        public void Update(Fruit fruit)
+        public async Task Update(Fruit fruit)
         {
             var fruitToUpdate = _context.Fruits.FirstOrDefault(f => f.Id == fruit.Id);
 
@@ -68,15 +96,14 @@ namespace WARestfulAPI.Controllers
             {
                 throw new KeyNotFoundException();
             }
-
-            //_context.Fruits[fruit.Id] = fruit;
+            
             _context.Update(fruit);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var fruit = _context.Fruits.FirstOrDefault(f => f.Id == id);
 
@@ -86,7 +113,7 @@ namespace WARestfulAPI.Controllers
             }
 
             _context.Fruits.Remove(fruit);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

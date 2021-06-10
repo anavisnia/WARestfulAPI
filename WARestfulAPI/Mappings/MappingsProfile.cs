@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Dtos;
+using WARestfulAPI.Modules;
 using WARestfulAPI.Modules.Base;
 
 namespace WARestfulAPI.Mappings
@@ -14,6 +15,9 @@ namespace WARestfulAPI.Mappings
         public MappingsProfile()
         {
             CreateMap<ProductDto, Product>().ReverseMap();
+            CreateMap<ProductDto, Fruit>().ReverseMap();
+            CreateMap<ProductDto, Vegetable>().ReverseMap();
+            CreateMap<ProductDto, Tableware>().ReverseMap();
         }
     }
 }
