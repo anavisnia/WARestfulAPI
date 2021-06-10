@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WARestfulAPI.Controllers.Base;
 using WARestfulAPI.Data;
 using WARestfulAPI.Repositories;
 
@@ -36,6 +37,8 @@ namespace WARestfulAPI
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped(typeof(GenericRepository<>));
+
+            services.AddScoped(typeof(GenericControllerBase<,>));
 
             services.AddSwaggerGen( c =>
             {

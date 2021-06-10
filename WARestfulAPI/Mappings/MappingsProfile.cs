@@ -18,6 +18,7 @@ namespace WARestfulAPI.Mappings
             CreateMap<ProductDto, Fruit>().ReverseMap();
             CreateMap<ProductDto, Vegetable>().ReverseMap();
             CreateMap<ProductDto, Tableware>().ReverseMap();
+            CreateMap<ShopDto, Shop>().ReverseMap();
         }
     }
 }
