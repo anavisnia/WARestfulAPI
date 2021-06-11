@@ -11,7 +11,7 @@ namespace WARestfulAPI.Modules.Base
     {
         public int Quantity { get; set; }
 
-        public Shop shop { get; set; }
+        public Shop Shop { get; set; }
 
         public int ShopId { get; set; }
 

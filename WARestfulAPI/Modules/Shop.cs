@@ -5,6 +5,6 @@ namespace WARestfulAPI.Modules.Base
 {
     public class Shop : Entity
     {
-        //public List<Product> Products { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
