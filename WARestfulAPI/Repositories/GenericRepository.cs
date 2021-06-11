@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Data;
 using WARestfulAPI.Dtos;
-using WARestfulAPI.Modules.Base;
+using WARestfulAPI.Entities.Base;
 
 namespace WARestfulAPI.Repositories
 {

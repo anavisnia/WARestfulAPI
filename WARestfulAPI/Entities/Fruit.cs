@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Dtos;
-using WARestfulAPI.Modules.Base;
-using WARestfulAPI.Modules;
+using WARestfulAPI.Entities.Base;
+using WARestfulAPI.Entities;
 
-namespace WARestfulAPI.Modules
+namespace WARestfulAPI.Entities
 {
     public class Fruit : Product
     {

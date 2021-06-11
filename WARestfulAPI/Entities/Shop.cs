@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace WARestfulAPI.Modules.Base
+namespace WARestfulAPI.Entities.Base
 {
     public class Shop : Entity
     {

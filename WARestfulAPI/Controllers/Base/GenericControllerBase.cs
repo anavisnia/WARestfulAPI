@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Dtos.Base;
-using WARestfulAPI.Modules.Base;
+using WARestfulAPI.Entities.Base;
 using WARestfulAPI.Repositories;
 
 namespace WARestfulAPI.Controllers.Base

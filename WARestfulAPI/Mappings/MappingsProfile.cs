@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WARestfulAPI.Dtos;
-using WARestfulAPI.Modules;
-using WARestfulAPI.Modules.Base;
+using WARestfulAPI.Entities;
+using WARestfulAPI.Entities.Base;
 
 namespace WARestfulAPI.Mappings
 {

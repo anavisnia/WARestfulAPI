@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WARestfulAPI.Modules;
-using WARestfulAPI.Modules.Base;
+using WARestfulAPI.Entities;
+using WARestfulAPI.Entities.Base;
 
 namespace WARestfulAPI.Data
 {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using WARestfulAPI.Controllers.Base;
 using WARestfulAPI.Data;
 using WARestfulAPI.Dtos;
-using WARestfulAPI.Modules;
+using WARestfulAPI.Entities;
 using WARestfulAPI.Repositories;
 
 namespace WARestfulAPI.Controllers
